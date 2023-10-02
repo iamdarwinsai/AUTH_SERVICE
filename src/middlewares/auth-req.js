@@ -10,4 +10,15 @@ function validateReq(req,res,next){
     return next()
 }
 
-module.exports={validateReq}
+function validateIsAdmin(req,res,next){
+    if(!req.body.id){
+        res.status(400).json({
+            data:"null",
+            message:"Missing ID",
+            err:"error"
+        })
+    }
+    return next()
+}
+
+module.exports={validateReq,validateIsAdmin}

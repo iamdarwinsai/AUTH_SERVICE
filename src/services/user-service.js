@@ -91,6 +91,18 @@ class UserService {
         }
     }
 
+    async isAdmin(userId){
+        try {
+            const admin=await this.userRepo.isAdmin(userId);
+            return admin;
+        } catch (error) {
+            console.log("Servvice layer");
+            throw {
+                error
+            }
+        }
+    }
+
 
     createToken(user) {
         try {

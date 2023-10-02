@@ -4,12 +4,13 @@ const bodyParser=require("body-parser")
 const {PORT}=require("./config/server-config")
 const db=require("./models/index")
 
+
 const apiRoutes=require("./routes/index")
 
 const app = express();
 
 
-const startServer=()=>{
+const startServer=async ()=>{
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}))
@@ -17,6 +18,8 @@ const startServer=()=>{
     if(process.env.DB_SYNC){
         db.sequelize.sync({alter:true})
     }
+
+
 
     app.use("/api",apiRoutes)
 
