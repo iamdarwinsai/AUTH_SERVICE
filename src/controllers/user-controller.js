@@ -28,11 +28,21 @@ const destroy = async (req, res) => {
     }
 }
 
-const signIn=async(req,res)=>{
+const signIn = async (req, res) => {
     try {
-        const response=await userService.signIn(req.body);
+        const response = await userService.signIn(req.body);
         return res.status(201).json({data: response, message: "SuccessFully Signed in", err: {}})
 
+    } catch (error) {
+        console.log("Something went wrong at controller");
+        return res.status(500).json({data: {}, message: "Fix your err", err: error})
+    }
+}
+const isAuthenticated = async (req, res) => {
+    try {
+        const token = req.headers['x-access-token'];
+        const response=await userService.isAuthenticated(token);
+        return res.status(201).json({data: response, message: "token is valid", err: {}})
     } catch (error) {
         console.log("Something went wrong at controller");
         return res.status(500).json({data: {}, message: "Fix your err", err: error})
@@ -42,5 +52,6 @@ const signIn=async(req,res)=>{
 module.exports = {
     create,
     destroy,
-    signIn
+    signIn,
+    isAuthenticated
 }

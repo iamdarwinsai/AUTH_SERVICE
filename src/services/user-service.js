@@ -32,8 +32,7 @@ class UserService{
 
     async signIn(data){
       try {
-        // first find wether email is present in db or not;
-        console.log(data);
+       
         const user=await this.userRepo.getUserByEmail(data.email);
 
         if(!user) throw {error:"INVALID EMAIL DO SIGN IN"}
@@ -52,6 +51,25 @@ class UserService{
         console.log("Servvice layer");
         throw {error}
       }
+    }
+
+    async isAuthenticated(token){
+        try {
+            const isVerified= this.verifyToken(token);
+            if(!isVerified){
+                throw {error:"INVALID TOKEN"}
+            }
+
+            const user=await this.userRepo.getUserByEmail(isVerified.email);
+            if(!user){
+                throw {error:"USER NOT AVAILABLE"}
+            }
+
+            return user.id;
+        } catch (error) {
+            console.log("Servvice layer");
+            throw {error}
+        }
     }
 
 
