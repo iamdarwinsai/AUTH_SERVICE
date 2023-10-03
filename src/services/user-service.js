@@ -15,10 +15,11 @@ class UserService {
             const result = await this.userRepo.create(data);
             return result;
         } catch (error) {
-            console.log("Servvice layer err");
-            throw {
-                error
+            if(error.name="SequelizeUniqueConstraintError"){
+                throw error;
             }
+            console.log("Servvice layer err");
+            throw error
         }
     }
 
@@ -38,13 +39,6 @@ class UserService {
         try {
 
             const user = await this.userRepo.getUserByEmail(data.email);
-
-            if (! user) 
-                throw {
-                    error : "INVALID EMAIL DO SIGN IN"
-                }
-            
-
 
             const verifyPassword = this.checkPassword(data.password, user.password);
 
@@ -91,9 +85,9 @@ class UserService {
         }
     }
 
-    async isAdmin(userId){
+    async isAdmin(userId) {
         try {
-            const admin=await this.userRepo.isAdmin(userId);
+            const admin = await this.userRepo.isAdmin(userId);
             return admin;
         } catch (error) {
             console.log("Servvice layer");

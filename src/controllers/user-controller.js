@@ -13,7 +13,7 @@ const create = async (req, res) => {
         return res.status(201).json({data: response, message: "SuccessFully created", err: {}})
     } catch (error) {
         console.log("Something went wrong at controller");
-        return res.status(500).json({data: {}, message: "FIx your err", err: error})
+        return res.status(error.statusCode).json({data: {},name:error.name, explanantion: error.explanation, message: error.message})
     }
 }
 

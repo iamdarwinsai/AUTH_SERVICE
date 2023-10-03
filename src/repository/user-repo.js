@@ -1,5 +1,5 @@
 const {User,Role}=require("../models/index")
-
+const ValidationError = require('../utils/validation-error');
 class UserRepository{
     
     async create(data){
@@ -7,6 +7,9 @@ class UserRepository{
             const result=await User.create(data)
             return result;
         } catch (error) {
+            if(error.name="SequelizeUniqueConstraintError"){
+                throw new ValidationError(error);
+            }
             console.log("Something went wrong on REPO LAYER");
             throw {error}
         }
